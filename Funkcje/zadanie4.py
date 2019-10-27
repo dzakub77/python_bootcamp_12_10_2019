@@ -47,7 +47,7 @@ def dodanie_dwoch_macierzy_with_zip(macierz1, macierz2):
         row = []
         for col_macierz1, col_macierz2 in zip(row_macierz1, row_macierz2):
             row.append(col_macierz1 + col_macierz2)
-         wynik.append(row)
+        wynik.append(row)
     return wynik
 
 
@@ -56,3 +56,9 @@ def test_dodanie_dwoch_macierzy():
     macierz2 = [[3, 4], [5, 6]]
     expected = [[4, 7], [7, 10]]
     assert dodanie_dwoch_macierzy(macierz1, macierz2) == expected
+
+def test_dodanie_dwoch_macierzy_with_zip():
+    macierz1 = [[1, 3], [2, 4]]
+    macierz2 = [[3, 4], [5, 6]]
+    expected = [[4, 7], [7, 10]]
+    assert dodanie_dwoch_macierzy_with_zip(macierz1, macierz2) == expected
