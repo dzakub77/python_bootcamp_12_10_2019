@@ -9,8 +9,9 @@
 8. Jak trafimy na inna postac, to wywiazuje sie walka
 """
 import random
-
-
+from faker import Faker
+DEBUG = True
+fake = Faker("pl_Pl")
 class Postac:
     def __init__(self, imie, zycie, sila):
         self.imie = imie
@@ -25,6 +26,7 @@ class Postac:
 
     def wez_przedmiot(self, przedmiot):
         self.ekwipunek.append(przedmiot)
+
 
     def obrazenia(self, sila):
         self.zycie -= sila
@@ -44,9 +46,12 @@ class Przedmiot:
         self.nazwa = nazwa
         self.miejsce = miejsce
 
+    def __str__(self):
+        return f"{self.nazwa} (+a: {self.bonus_do_ataku} +o: {self.bonus_do_obrony}) m: {self.miejsce}"
+
 class Polozenie:
 
-    def __init__(self, x, y, zasieg_x, zasieg_y):
+    def __init__(self, x, y, zasieg_x=10, zasieg_y=10):
         self.x = x
         self.y = y
         self.zasieg_x = zasieg_x
@@ -55,31 +60,35 @@ class Polozenie:
     def __str__(self):
         return f"Pozycja x={self.x}, y={self.y}"
 
-    def gora(self):
+    def g(self):
         self.y += 1
         if self.y > self.zasieg_y:
             print("Wypadles poza plansze")
             exit()
-    def dol(self):
+    def d(self):
         self.y -= 1
         if self.y < 0:
             print("Wypadles poza plansze")
             exit()
-    def prawo(self):
+    def p(self):
         self.x += 1
         if self.x > self.zasieg_x:
             print("Wypadles poza plansze")
             exit()
-    def lewo(self):
+    def l(self):
         self.x -= 1
         if self.x < 0:
             print("Wypadles poza plansze")
             exit()
 
+    def __eq__(self, other):
+       # if self.x == other.x and self.y == other.y:
+        #    retrun True
+        #return False
+        return self.x == other.x and self.y == other.y
+class Plansza():
 
-class Plansza:
-
-    def __init__(self, gracz, bot, przedmiot, x=10, y=10):
+    def __init__(self, gracz: Postac, bot: Postac, przedmiot, x=10, y=10):
         self.x = x  # wymiar planszy wzdluz osi x
         self.y = y
         self.gracz = gracz
@@ -89,23 +98,59 @@ class Plansza:
         self.polozenie_bota = Polozenie(random.randint(1, 10), random.randint(1, 10), x, y)
         self.polozenie_przedmiotu = Polozenie(random.randint(1, 10), random.randint(1, 10), x, y)
 
-def gra():
+    def ruch(self):
+        if DEBUG:
+            print(f"Twoje połozenie: {self.polozenie_gracza} ")
+            print(f"Twoje bota: {self.polozenie_bota} ")
+            print(f"Twoje przedmiotu: {self.polozenie_przedmiotu} ")
+        kierunek = input("Podaj kierunek g, d, l, p: ")
+        # if kierunek == "g":
+        #     self.polozenie_gracza.gora()
+        # elif kierunek == "d":
+        #     self.polozenie_gracza.dol()
+        # elif kierunek == "l":
+        #     self.polozenie_gracza.lewo()
+        # elif kierunek == "p":
+        #     self.polozenie_gracza.prawo()
 
-    if self.polozenie_gracza
-    while not hero1.zyje and hero2.zyje:
-        obrazenia = hero1.atak
-        print(f"{hero1.imie} zadaje obrazenia za {obrazenia}")
-        hero2.obrazenia(obrazenia)
-        if hero2.zyje:
-            obrazenia = hero1.atak
-            print(f"{hero2.imie} przezyl i oddaje za {obrazenia}")
-            hero1.obrazenia(obrazenia)
+       # ruch = {
+       #     'g': self.polozenie_gracza.gora,
+       #     'd': self.polozenie_gracza.dol,
+        #    'l': self.polozenie_gracza.lewo,
+       #     'p': self.polozenie_gracza.prawo
+       # }
+        if hasattr(self.polozenie_gracza, kierunek):
+            getattr(self.polozenie_gracza, kierunek)()
+        else:
+            print("Nie poprawna komenda")
+        # ruch[kierunek]()
 
-    print(hero1, hero2)
+
+
+    def gra(self):
+        while True:
+            self.ruch()
+            if self.polozenie_gracza == self.polozenie_bota:
+                print(f"Spotkales wroga: {self.bot}\n\nwalka:\n ")
+                while self.gracz.zyje and self.bot.zyje:
+                    obrazenia = self.gracz.atak
+                    print(f"{self.gracz.imie} zadaje obrażenia za {obrazenia}")
+                    self.bot.obrazenia(obrazenia)
+                    if self.bot.zyje:
+                        obrazenia = self.gracz.atak
+                        print(f"{self.bot.imie}  przeżył i oddaje za {obrazenia}")
+                        self.gracz.obrazenia(obrazenia)
+                print(self.gracz, self.bot)
+            if self.polozenie_gracza == self.polozenie_przedmiotu:
+                self.gracz.wez_przedmiot(self.przedmiot)
+                self.polozenie_przedmiotu = Polozenie(-1, -1)
+                print(f"{self.gracz.imie} przyjmuje {przedmiot} do ekwipunku")
+
 
 
 hero1 = Postac("Superman", 200, 200)
-hero2 = Postac("Hulk", 200, 200)
-przedmiot = Plansza(hero1, hero1)
-plansza = Plansza(hero1, hero2, przedmiot)
-gra()
+bot = Postac(fake.name(), fake.random_int(), fake.random_int())
+przedmiot = Przedmiot(fake.text(20), fake.random_int(), fake.random_int(), fake.random_int(1, 10))
+
+plansza = Plansza(hero1, bot, przedmiot)
+plansza.gra()

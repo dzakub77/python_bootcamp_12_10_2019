@@ -16,12 +16,12 @@ class Employee:
         if self.register_time == 8:
             self.rate = 8 * rate
             self.register_time = 0
-        elif self.register_time == 10
+        elif self.register_time == 10:
             self.rate = 8 * rate + 4 * rate
             self.register_time = 0
-        if self.register_time == 0
+        if self.register_time == 0:
             self.pay_salary == 0
-e = Employee("Kuba", "Jakiś", 100)
+
 
 def test_employee_init():
     employee = Employee("Rafał", "Korzeniewski", 200)

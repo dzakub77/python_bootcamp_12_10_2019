@@ -1,9 +1,12 @@
 
 class Product:
-    def __init__(self, id, name, price):
-        self.id = id
+    NEXT_ID = 1
+    def __init__(self, name, price):
+        self.id = Product.NEXT_ID
         self.name = name
         self.price = price
+        Product.NEXT_ID += 1
+
 class BasketEntry:
     def __init__(self, product: Product, amount: int):
         self.product = product
@@ -33,6 +36,12 @@ class Basket:
                 in_basket = True
         if not in_basket:
             self.basket_entries.append(basket_entry)
+    @staticmethod
+    def with_products(produkty):
+        koszyk = Basket()
+        for product in produkty:
+            koszyk.add_product(product, 1)
+        return koszyk
 
     def count_total_price(self):
         total_price = 0
@@ -51,7 +60,5 @@ class Basket:
         return report
     def add_discount(self, discount):
         self.discounts.append(discount)
-
-
 
 

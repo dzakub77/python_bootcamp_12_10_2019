@@ -15,10 +15,10 @@ class TestPostac:
         hero = Postac("Hi-men", 100, 200)
         siekiera = Przedmiot("Krwawa Siekiera", 50, 5, 4)
         hero.wez_przedmiot(siekiera)
-        assert hero.atak <= 250
+        assert hero.atak == 250
         noz = Przedmiot("Ostrze prawdy", 25, 5, 2)
         hero.wez_przedmiot(noz)
-        assert hero.atak <= 275
+        assert hero.atak == 275
 
     def test_obrazenia(self):
         hero = Postac("Hi-men", 100, 200)
