@@ -1,0 +1,28 @@
+{% extends "maths\base.html" %}
+{%block title%}Szczegoły{%endblock%}
+{% block content %}
+<!-- To jest komentarz html-->
+<table>
+    <tr>
+        <td>a</td>
+        <td>{{math.a}}</td>
+    </tr>
+    <tr>
+        <td>b</td>
+        <td>{{math.b}}</td>
+    </tr>
+    <tr>
+        <td>operation</td>
+        <td>{{math.operation}}</td>
+    </tr>
+    <tr>
+        <td>resault</td>
+        <td>{{math.resault}}</td>
+    </tr>
+    <tr>
+        <td>Data</td>
+        <td>{{math.created}}</td>
+    </tr>
+</table>
+{#to jest komentarz szablonow#}
+{% endblock %}

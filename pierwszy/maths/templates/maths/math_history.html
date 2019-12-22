@@ -1,0 +1,16 @@
+{% extends "maths\base.html" %}
+{%block title%}Lista{%endblock%}
+
+{% block content %}
+{% if maths %}
+    <ul>
+        {% if maths %}
+        {% for m in maths %}
+        <li><a href="/maths/history/{{m.id}}"> {{ m }}</a></li>
+        {% endfor %}
+    </ul>
+{% else %}
+Brak wyników
+{% endif %}
+{{ text }}
+{% endblock %}
